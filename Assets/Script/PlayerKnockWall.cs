@@ -9,6 +9,17 @@ public class PlayerKnockWall : MonoBehaviour {
     private int wall = 0;
     private List<Pair<GameObject, float>> listSound;
     private float soundLife = 1.0f;
+    private bool disabled = false;
+
+    public void disableKnock()
+    {
+        disabled = true;
+    }
+
+    public void enableKnock()
+    {
+        disabled = false;
+    }
 
     void OnCollisionEnter(Collision col)
     {
@@ -34,7 +45,7 @@ public class PlayerKnockWall : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	    if(Input.GetButtonDown("Attack") && wall > 0)
+	    if(Input.GetButtonDown("Attack") && wall > 0 && !disabled)
         {
             GameObject sound = new GameObject();
             sound.transform.position = playerTransform.position;

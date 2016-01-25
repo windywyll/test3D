@@ -6,7 +6,19 @@ public class PlayerGrapProp : MonoBehaviour {
     public float throwForce = 0;
     private Rigidbody propToGrabRB;
     private Collider propToGrabcol;
+    private Vector3 initScale;
     private bool grabbed = false;
+    private bool disabled = false;
+
+    public void disableGrab()
+    {
+        disabled = true;
+    }
+
+    public void enableGrab()
+    {
+        disabled = false;
+    }
 
     void OnCollisionEnter(Collision col)
     {
@@ -33,11 +45,12 @@ public class PlayerGrapProp : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-        if (Input.GetButtonDown("Grab") && propToGrabRB != null)
+        if (Input.GetButtonDown("Grab") && propToGrabRB != null && !disabled)
             {
                 if(grabbed)
                 {
                     propToGrabRB.transform.parent = null;
+                    propToGrabRB.transform.localScale = initScale;
                     propToGrabRB.isKinematic = false;
                     propToGrabcol.enabled = true;
                     Vector3 throwDir = this.transform.forward;
@@ -48,6 +61,7 @@ public class PlayerGrapProp : MonoBehaviour {
                 }
                 else
                 {
+                    initScale = propToGrabRB.transform.localScale;
                     propToGrabRB.transform.parent = this.gameObject.transform;
                     propToGrabRB.isKinematic = true;
                     propToGrabcol.enabled = false;

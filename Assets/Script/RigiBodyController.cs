@@ -13,12 +13,32 @@ public class RigiBodyController : MonoBehaviour {
     public bool canJump = true;
     public float jumpHeight = 2.0f;
     public float heightReduc = 2.0f;
+    public float speedReductor = 3.0f;
     private bool grounded = false;
     private bool isCrouched = false; 
     private CapsuleCollider mCollider;
     public Rigidbody rigidbody;
+    private bool disabled;
 
+    public void disableAllButMove()
+    {
+        disabled = true;
+    }
 
+    public void enableAll()
+    {
+        disabled = false;
+    }
+
+    public void setToCrouchSpeed()
+    {
+        speed /= speedReductor;
+    }
+
+    public void revertToInitSpeed()
+    {
+        speed *= speedReductor;
+    }
 
     void Awake()
     {
@@ -47,18 +67,18 @@ public class RigiBodyController : MonoBehaviour {
             rigidbody.AddForce(velocityChange, ForceMode.VelocityChange);
 
             // Jump
-            if (canJump && Input.GetButton("Jump"))
+            if (canJump && Input.GetButton("Jump") && !isCrouched && !disabled)
             {
                 rigidbody.velocity = new Vector3(velocity.x, CalculateJumpVerticalSpeed(), velocity.z);
             }
 
-            if (Input.GetButtonDown("Crouch"))
+            if (Input.GetButtonDown("Crouch") && !disabled)
             {
                 isCrouched = !isCrouched;
 
                 if (isCrouched)
                 {
-                    speed /= 3;
+                    speed /= speedReductor;
                     mCollider.height = mCollider.height / heightReduc;
                     mCollider.center = mCollider.center / heightReduc;
                     this.gameObject.transform.Translate(0, -(mCollider.height / heightReduc), 0);
@@ -66,7 +86,7 @@ public class RigiBodyController : MonoBehaviour {
                 }
                 else
                 {
-                    speed *= 3;
+                    speed *= speedReductor;
                     mCollider.height = mCollider.height * heightReduc;
                     mCollider.center = mCollider.center * heightReduc;
                     this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y * heightReduc, this.transform.localScale.z);
