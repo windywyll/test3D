@@ -6,11 +6,18 @@ public class PlayerGrab : MonoBehaviour {
     public int maxStamina = 2000;
     private int stamina;
     private bool hanging = false;
-    private int canHangItself = 0;
     private bool canMove = true;
+    public float gravity = 20.0F;
     private PlayerControler pc;
     private PlayerAttack pa;
     private Animator anim;
+    private Collider colHang = null;
+    private Quaternion initialRot;
+
+    void Awake()
+    {
+        initialRot = this.transform.rotation;
+    }
 
 	// Use this for initialization
 	void Start () {
@@ -25,7 +32,7 @@ public class PlayerGrab : MonoBehaviour {
     {
         if (col.tag == "HangingPoint")
         {
-            canHangItself++;
+            colHang = col;
         }
     }
 
@@ -33,7 +40,7 @@ public class PlayerGrab : MonoBehaviour {
     {
         if (col.tag == "HangingPoint")
         {
-            canHangItself--;
+            colHang = null;
         }
     }
 
@@ -51,7 +58,7 @@ public class PlayerGrab : MonoBehaviour {
 	void Update () 
     {
 	    
-        if(canHangItself > 0 && canMove)
+        if(colHang != null)
         {
             if(Input.GetButton("Hang"))
             {
@@ -62,6 +69,9 @@ public class PlayerGrab : MonoBehaviour {
 
                 hanging = true;
                 stamina--;
+
+                this.gameObject.transform.parent = colHang.gameObject.transform;
+
             }
 
             if(Input.GetButtonUp("Hang") || stamina == 0 )
@@ -72,6 +82,9 @@ public class PlayerGrab : MonoBehaviour {
 
                 pc.freeMove();
                 pa.freeMove();
+
+                this.gameObject.transform.parent = null;
+                this.transform.rotation = initialRot;
             }
         }
         

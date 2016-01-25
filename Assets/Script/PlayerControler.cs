@@ -8,7 +8,6 @@ public class PlayerControler : MonoBehaviour {
     public float gravity = 20.0F;
     public float heightReduc = 2.0f;
     public int angleSlide = 55;
-    public Animator playerAnimator;
     private bool isCrouched = false;
     private bool sliding = false;
     private bool canMove = true;
@@ -17,10 +16,9 @@ public class PlayerControler : MonoBehaviour {
     private CapsuleCollider mCollider;
     private CharacterController controller;
     
-    
-    void OnControllerColliderHit (ControllerColliderHit hit)
+    void OnTriggerEnter(Collider col)
     {
-        float angle = Vector3.Angle(hit.normal, Vector3.up);
+        /*float angle = Vector3.Angle(hit.normal, Vector3.up);
         if (angle > angleSlide)
         {
             Vector3 slideDir = hit.normal;
@@ -34,8 +32,10 @@ public class PlayerControler : MonoBehaviour {
         else
         {
             sliding = false;
-        }
+        }*/
+        Debug.Log(col.transform.tag);
     }
+    
 
     public void cantMove()
     {
@@ -84,19 +84,15 @@ public class PlayerControler : MonoBehaviour {
                     //Multiply it by speed.
                     moveDirection *= speed;
 
-                    playerAnimator.SetFloat("SpeedPlayer", moveDirection.magnitude * Time.deltaTime);
-
                     //Jumping
-                    playerAnimator.SetBool("jumping", false);
                     if (Input.GetButton("Jump") && !sliding)
                     {
-                        playerAnimator.SetBool("jumping", true);
                         moveDirection.y = jumpSpeed;
                     }
 
                     if (Input.GetButtonDown("Crouch"))
                     {
-                        /*isCrouched = !isCrouched;
+                        isCrouched = !isCrouched;
 
                         if (isCrouched)
                         {
@@ -112,13 +108,9 @@ public class PlayerControler : MonoBehaviour {
                             mCollider.height = mCollider.height * heightReduc;
                             mCollider.center = mCollider.center * heightReduc;
                             this.transform.localScale = new Vector3(this.transform.localScale.x, this.transform.localScale.y * heightReduc, this.transform.localScale.z);
-                        }*/
+                        }
                     }
 
-                }
-                else
-                {
-                    playerAnimator.SetBool("jumping", true);
                 }
             }
 
