@@ -6,8 +6,9 @@ using System.Collections;
 public class GridEditor : Editor {
 
     GuizmoGrid grid;
+    public GameObject prefab;
 
-    public void OnEnable()
+   /* public void OnEnable()
     {
         grid = (GuizmoGrid) target;
         SceneView.onSceneGUIDelegate = GridUpdate;
@@ -17,15 +18,18 @@ public class GridEditor : Editor {
     {
         Event e = Event.current;
 
-        if (e.isKey && e.character == 'a')
+        Ray r = Camera.current.ScreenPointToRay(new Vector3(e.mousePosition.x, 0.0f, -e.mousePosition.y + Camera.current.pixelHeight));
+        Vector3 mousePos = r.origin;
+
+        if (e.isMouse && e.button == 0 && e.type == EventType.MouseUp)
         {
             GameObject obj;
-            Object prefab = PrefabUtility.GetPrefabParent(Selection.activeObject);
 
             if (prefab)
             {
                 obj = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
-                obj.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
+                Vector3 aligned = new Vector3(Mathf.Floor(mousePos.x / grid.xWidth) * grid.xWidth + grid.xWidth / 2.0f, 0.0f, Mathf.Floor(mousePos.y / grid.zWidth) * grid.zWidth + grid.zWidth / 2.0f);
+                obj.transform.position = aligned;
             }
         }
     }
@@ -48,6 +52,6 @@ public class GridEditor : Editor {
         GUILayout.EndHorizontal();
 
         SceneView.RepaintAll();
-    }
+    }*/
 
 }
