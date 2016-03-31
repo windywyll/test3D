@@ -21,10 +21,11 @@ public class GuizmoGrid : MonoBehaviour {
     {
         Vector3 pos = Camera.current.transform.position;
 
+        Gizmos.color = Color.black;
+
         for (float z = pos.z - 800.0f; z < pos.z + 800.0f; z += zWidth)
         {
-            Gizmos.DrawLine(new Vector3(-1000000.0f, height, Mathf.Floor(z / zWidth) * zWidth),
-                            new Vector3(1000000.0f, height, Mathf.Floor(z / zWidth) * zWidth));
+            Gizmos.DrawLine(new Vector3(-1000000.0f, height, Mathf.Floor(z / zWidth) * zWidth), new Vector3(1000000.0f, height, Mathf.Floor(z / zWidth) * zWidth));
         }
 
         for (float x = pos.x - 1200.0f; x < pos.x + 1200.0f; x += xWidth)
