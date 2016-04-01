@@ -7,12 +7,10 @@ public class HallEditor : MonoBehaviour {
     public GameObject prefabsHall;
     public GuizmoGrid grid;
     private GameObject newObj;
-    private Ray forward;
 
 	// Use this for initialization
 	void Start () {
         mainCam = Camera.main;
-        forward = new Ray(Vector3.zero, Vector3.zero);
 	}
 	
 	// Update is called once per frame
@@ -34,32 +32,84 @@ public class HallEditor : MonoBehaviour {
                     Vector3 aligned = new Vector3(Mathf.Floor(hit.point.x / grid.xWidth) * grid.xWidth + grid.xWidth / 2.0f, 0.0f, Mathf.Floor(hit.point.z / grid.zWidth) * grid.zWidth + grid.zWidth / 2.0f);
                     newObj.transform.position = aligned;
 
-                    Debug.Log("created");
-
-                    forward = new Ray((newObj.transform.position + (0.55f * newObj.transform.forward)), newObj.transform.forward);
-
-                    Debug.Log("orig : " + forward.origin);
-                    Debug.Log("dir : " + forward.direction);
-                    Debug.Log("pos cube : " + newObj.transform.position);
-
-                    if (Physics.Raycast(ray, out hit, 0.5f))
-                    {
-                        Debug.Log("found something");
-                        if (hit.transform.tag == "Hall")
-                        {
-                            Debug.Log("yep it's a wall!");
-                            newObj.transform.FindChild("WallF").gameObject.SetActive(false);
-                            hit.transform.gameObject.SetActive(false);
-                        }
-                    }
-
-                    /*ray = new Ray((newObj.transform.position + (0.55f * -newObj.transform.forward)), -newObj.transform.forward);
-                    ray = new Ray((newObj.transform.position + (0.55f * newObj.transform.right)), newObj.transform.right);
-                    ray = new Ray((newObj.transform.position + (0.55f * -newObj.transform.right)), -newObj.transform.right);*/
+                    detectForward();
+                    detectBack();
+                    detectLeft();
+                    detectRight();
                 }
             }
         }
+    }
 
-        Debug.DrawRay(forward.origin, forward.direction, Color.red);
+    void detectForward()
+    {
+        RaycastHit hit;
+
+        Ray forward = new Ray((newObj.transform.position + (0.5f * newObj.transform.up)), newObj.transform.forward);
+
+        if (Physics.Raycast(forward, out hit, 1.0f))
+        {
+            Debug.Log("found something");
+            if (hit.transform.tag == "Hall" && hit.transform.name != "WallF")
+            {
+                Debug.Log("yep it's a wall!");
+                newObj.transform.FindChild("WallF").gameObject.SetActive(false);
+                hit.transform.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    void detectBack()
+    {
+        RaycastHit hit;
+
+        Ray back = new Ray((newObj.transform.position + (0.5f * newObj.transform.up)), -newObj.transform.forward);
+
+        if (Physics.Raycast(back, out hit, 1.0f))
+        {
+            Debug.Log("found something");
+            if (hit.transform.tag == "Hall" && hit.transform.name != "WallB")
+            {
+                Debug.Log("yep it's a wall!");
+                newObj.transform.FindChild("WallB").gameObject.SetActive(false);
+                hit.transform.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    void detectRight()
+    {
+        RaycastHit hit;
+
+        Ray right = new Ray((newObj.transform.position + (0.5f * newObj.transform.up)), newObj.transform.right);
+
+        if (Physics.Raycast(right, out hit, 1.0f))
+        {
+            Debug.Log("found something");
+            if (hit.transform.tag == "Hall" && hit.transform.name != "WallR")
+            {
+                Debug.Log("yep it's a wall!");
+                newObj.transform.FindChild("WallR").gameObject.SetActive(false);
+                hit.transform.gameObject.SetActive(false);
+            }
+        }
+    }
+
+    void detectLeft()
+    {
+        RaycastHit hit;
+
+        Ray left = new Ray((newObj.transform.position + (0.5f * newObj.transform.up)), -newObj.transform.right);
+
+        if (Physics.Raycast(left, out hit, 1.0f))
+        {
+            Debug.Log("found something");
+            if (hit.transform.tag == "Hall" && hit.transform.name != "WallL")
+            {
+                Debug.Log("yep it's a wall!");
+                newObj.transform.FindChild("WallL").gameObject.SetActive(false);
+                hit.transform.gameObject.SetActive(false);
+            }
+        }
     }
 }
