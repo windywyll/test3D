@@ -84,10 +84,12 @@ public class HallEditor : MonoBehaviour {
 
         if (Physics.Raycast(forward, out hit, 1.0f))
         {
-            if (hit.transform.tag == "Hall" && hit.transform.name != "WallF")
+            if (hit.transform.tag == "Hall" && hit.transform.name != "WallF" && !hit.transform.parent.gameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Hall@Appear"))
             {
-                obj.transform.FindChild("WallF").gameObject.SetActive(false);
-                hit.transform.gameObject.SetActive(false);
+                //obj.transform.FindChild("WallF").gameObject.SetActive(false);
+                //hit.transform.gameObject.SetActive(false);
+                obj.GetComponent<Hall>().hideForwardWall();
+                hit.transform.parent.gameObject.GetComponent<Hall>().hideBackWall();
             }
         }
     }
@@ -100,10 +102,12 @@ public class HallEditor : MonoBehaviour {
 
         if (Physics.Raycast(back, out hit, 1.0f))
         {
-            if (hit.transform.tag == "Hall" && hit.transform.name != "WallB")
+            if (hit.transform.tag == "Hall" && hit.transform.name != "WallB" && !hit.transform.parent.gameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Hall@Appear"))
             {
-                obj.transform.FindChild("WallB").gameObject.SetActive(false);
-                hit.transform.gameObject.SetActive(false);
+                //obj.transform.FindChild("WallB").gameObject.SetActive(false);
+                //hit.transform.gameObject.SetActive(false);
+                obj.GetComponent<Hall>().hideBackWall();
+                hit.transform.parent.gameObject.GetComponent<Hall>().hideForwardWall();
             }
         }
     }
@@ -116,10 +120,12 @@ public class HallEditor : MonoBehaviour {
 
         if (Physics.Raycast(right, out hit, 1.0f))
         {
-            if (hit.transform.tag == "Hall" && hit.transform.name != "WallR")
+            if (hit.transform.tag == "Hall" && hit.transform.name != "WallR" && !hit.transform.parent.gameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Hall@Appear"))
             {
-                obj.transform.FindChild("WallR").gameObject.SetActive(false);
-                hit.transform.gameObject.SetActive(false);
+                //obj.transform.FindChild("WallR").gameObject.SetActive(false);
+                //hit.transform.gameObject.SetActive(false);
+                obj.GetComponent<Hall>().hideRightdWall();
+                hit.transform.parent.gameObject.GetComponent<Hall>().hideLeftWall();
             }
         }
     }
@@ -132,10 +138,12 @@ public class HallEditor : MonoBehaviour {
 
         if (Physics.Raycast(left, out hit, 1.0f))
         {
-            if (hit.transform.tag == "Hall" && hit.transform.name != "WallL")
+            if (hit.transform.tag == "Hall" && hit.transform.name != "WallL" && !hit.transform.parent.gameObject.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).IsName("Hall@Appear"))
             {
-                obj.transform.FindChild("WallL").gameObject.SetActive(false);
-                hit.transform.gameObject.SetActive(false);
+                //obj.transform.FindChild("WallL").gameObject.SetActive(false);
+                //hit.transform.gameObject.SetActive(false);
+                obj.GetComponent<Hall>().hideLeftWall();
+                hit.transform.parent.gameObject.GetComponent<Hall>().hideRightdWall();
             }
         }
     }
